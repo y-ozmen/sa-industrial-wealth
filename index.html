@@ -635,7 +635,7 @@
             /\b(takt time|line speed|cycle time|machine count|robot count|number of robots)\b/i, // plant-floor engineering specs
             /\b(revenue|profits?|stock price|share price|earnings|market cap|dividends?)\b/i, // corporate financials — not in the factbase
             /\b(msrp|sticker price|horsepower|towing|mpg|fuel economy|ev range|trim levels?)\b/i, // vehicle product specs & pricing
-            /\b(price|cost) of (the )?(tacoma|tundra|sequoia|truck|vehicle)s?\b/i,     // vehicle pricing, phrased naturally
+            /\b(price|cost) of (the )?(tacoma|tundra|sequoia|truck|vehicle)s?\b|\b(tacoma|tundra|sequoia|truck|vehicle)s? (cost|price|msrp|sell for)\b/i, // vehicle pricing, both word orders
             /\b(predict(s|ion|ions)?|forecasts?|speculat(e|ion)|crystal ball)\b/i,     // requests for predictions — verified facts only
             /\blay.?offs?\b|\bjob cuts?\b|\bdownsiz/i,                                 // layoffs / downsizing — never covered
             /\b(union(s|ize|ization)?|collective bargaining)\b/i,                      // labor-relations questions
@@ -658,6 +658,21 @@
                 if (UNCOVERED_DETAIL[i].test(msg)) return true;
             }
             return false;
+        }
+
+        /* Rotating refusal openers — cycled in strict order, so the user
+           never sees the same opening twice in a row. Add variants freely;
+           keep each one a single self-contained sentence. */
+        var REFUSALS = [
+            "That level of detail isn't in my source documents, so I won't estimate it.",
+            "My source material doesn't go that granular — that figure was never published.",
+            "I can't verify that from my source documents, and I don't offer unverified numbers."
+        ];
+        var refusalIdx = 0;
+        function nextRefusal() {
+            var r = REFUSALS[refusalIdx % REFUSALS.length];
+            refusalIdx += 1;
+            return r;
         }
 
         var FOLLOW_UP = /\b(tell me more|more|deeper|dive|elaborate|expand|continue|go on|yes|yeah|sure|please|ok(ay)?|next)\b/i;
@@ -757,18 +772,19 @@
             var node = matchIntent(msg);
 
             /* Specific-question detector runs FIRST: if the question demands
-               detail the factbase doesn't hold, admit the gap explicitly —
-               then offer the closest verified data instead of dodging. */
+               detail the factbase doesn't hold, admit the gap in one short
+               reply. Never paste a full topic answer here — name the nearest
+               topic and offer it as a chip the user can tap. Context is only
+               set once an answer is actually delivered (via the chip). */
             if (asksUncoveredDetail(msg)) {
                 if (node) {
-                    setContext(node);
                     return {
-                        text: "That level of detail isn't in my source documents, so I won't estimate it. The closest verified data I hold: " + node.response,
-                        suggestions: null
+                        text: nextRefusal() + " The nearest topic where I do hold verified figures is “" + node.label + "” — tap below to see it.",
+                        suggestions: [node]
                     };
                 }
                 return {
-                    text: "That level of detail isn't in my source documents, and estimating it would be guesswork. These are the areas where I hold verified data:",
+                    text: nextRefusal() + " Areas where I do hold verified figures:",
                     suggestions: pickSuggestions(3, null)
                 };
             }
