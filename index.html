@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA INDUSTRIAL WEALTH — Toyota Expansion Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <style>
+        :root {
+            /* series colors (validated categorical slots) */
+            --s1-blue:   #2a78d6;
+            --s1-deep:   #1c5cab;
+            --s2-aqua:   #1baf7a;
+            --s3-yellow: #eda100;
+            --s4-green:  #008300;
+            --deemph:    #86b6ef;
+            /* chart chrome */
+            --ink:       #0b0b0b;
+            --ink-muted: #898781;
+            --gridline:  #e1e0d9;
+            --baseline:  #c3c2b7;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+
+        .typing-dot {
+            width: 6px; height: 6px; border-radius: 9999px;
+            background: #94a3b8; display: inline-block;
+            animation: typing-bounce 1.2s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(2) { animation-delay: .15s; }
+        .typing-dot:nth-child(3) { animation-delay: .3s; }
+        @keyframes typing-bounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: .5; }
+            30%           { transform: translateY(-4px); opacity: 1; }
+        }
+        #chat-history { scrollbar-width: thin; }
+        .kpi-value { font-variant-numeric: normal; }
+    </style>
+</head>
+<body class="bg-[#f4f6f8] text-slate-900 antialiased">
+
+    <!-- ================================ TOP NAV ================================ -->
+    <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-lg bg-blue-800 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold tracking-wide text-slate-900 leading-tight">SA INDUSTRIAL WEALTH</p>
+                    <p class="text-[11px] text-slate-500 leading-tight">Toyota Expansion Intelligence &middot; Project Orca</p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-3 text-xs text-slate-500">
+                <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-800 font-medium px-2.5 py-1 rounded-full">
+                    <span class="h-1.5 w-1.5 rounded-full bg-blue-600"></span> Factbase: July 2026
+                </span>
+                <span class="hidden lg:inline">San Antonio &middot; Bexar County, TX</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================================ MAIN ================================ -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-10">
+
+        <!-- Headline -->
+        <header class="max-w-4xl">
+            <p class="text-xs font-semibold tracking-widest text-blue-700 uppercase mb-3">Strategic Macroeconomic Briefing</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+                Beyond the $3.6B: San Antonio's Generational Shift
+            </h1>
+            <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
+                Toyota's $3.6 billion Project Orca doubles the TMMTX campus by 2030, moves Tacoma production from Baja
+                California to Texas, and anchors the Texas&ndash;Mexico Automotive Supercluster. The capital is committed
+                &mdash; the binding constraints are now supply-chain scaling, the talent pipeline, and authentic TPS
+                integration.
+            </p>
+        </header>
+
+        <!-- ============================ KPI TILES ============================ -->
+        <section aria-label="Strategic key indicators" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+            <div class="bg-white border border-slate-200 rounded-xl p-5">
+                <p class="text-xs font-medium text-slate-500">Project Orca investment</p>
+                <p class="mt-2 text-3xl font-semibold text-slate-900 kpi-value">$3.6B</p>
+                <p class="mt-1 text-xs text-slate-500">Second assembly line &middot; announced Jul 2026</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-5">
+                <p class="text-xs font-medium text-slate-500">Cumulative Toyota investment</p>
+                <p class="mt-2 text-3xl font-semibold text-slate-900 kpi-value">$8.3B</p>
+                <p class="mt-1 text-xs text-slate-500">San Antonio campus since 2003</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-5">
+                <p class="text-xs font-medium text-slate-500">Total campus jobs</p>
+                <p class="mt-2 text-3xl font-semibold text-slate-900 kpi-value">11,600+</p>
+                <p class="mt-1 text-xs text-slate-500">~6,000 Toyota + ~5,600 supplier team members</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-5">
+                <p class="text-xs font-medium text-slate-500">Campus footprint by 2030</p>
+                <p class="mt-2 text-3xl font-semibold text-slate-900 kpi-value">4.7M ft&sup2;</p>
+                <p class="mt-1 text-xs text-slate-500">2.2M existing + 2.5M Orca addition</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-5">
+                <p class="text-xs font-medium text-slate-500">Added annual capacity</p>
+                <p class="mt-2 text-3xl font-semibold text-slate-900 kpi-value">150K</p>
+                <p class="mt-1 text-xs text-slate-500">Units per year from 2030 (Tacoma)</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-5">
+                <p class="text-xs font-medium text-slate-500">Total incentive package</p>
+                <p class="mt-2 text-3xl font-semibold text-slate-900 kpi-value">$303M</p>
+                <p class="mt-1 text-xs text-slate-500">State + county + city + utilities</p>
+            </div>
+        </section>
+
+        <!-- ============================ CHARTS ============================ -->
+        <section class="grid xl:grid-cols-2 gap-6">
+
+            <!-- Chart A: Toyota investment waves -->
+            <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-7">
+                <div class="flex flex-wrap items-start justify-between gap-4 mb-1">
+                    <div>
+                        <h2 class="text-lg font-semibold text-slate-900">Toyota's San Antonio investment waves</h2>
+                        <p class="text-sm text-slate-500 mt-0.5">Cumulative $8.3B across three phases &middot; $ billions</p>
+                    </div>
+                    <div class="flex items-center gap-5 text-xs text-slate-600 pt-1">
+                        <span class="flex items-center gap-2">
+                            <span class="h-2.5 w-2.5 rounded-sm" style="background: var(--deemph)"></span> Prior phases
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <span class="h-2.5 w-2.5 rounded-sm" style="background: var(--s1-blue)"></span> Project Orca
+                        </span>
+                    </div>
+                </div>
+                <div class="relative h-72 mt-4">
+                    <canvas id="investmentChart" role="img"
+                            aria-label="Bar chart of Toyota investment in San Antonio: legacy campus 2003 to 2024 about 4.2 billion dollars, Project Iceberg 2024 about 0.53 billion, Project Orca 2026 3.6 billion dollars."></canvas>
+                </div>
+                <details class="mt-4 text-sm">
+                    <summary class="cursor-pointer text-slate-500 hover:text-slate-700 select-none">View data table</summary>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="min-w-[360px] w-full text-left text-sm text-slate-700">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500">
+                                    <th class="py-2 pr-6 font-medium">Phase</th>
+                                    <th class="py-2 pr-6 font-medium">Scope</th>
+                                    <th class="py-2 font-medium text-right">Investment</th>
+                                </tr>
+                            </thead>
+                            <tbody class="[&_td]:py-2 [&_tr]:border-b [&_tr]:border-slate-100" style="font-variant-numeric: tabular-nums;">
+                                <tr><td class="pr-6">Legacy campus (2003&ndash;24)</td><td class="pr-6">Tundra &amp; Sequoia lines, supplier park</td><td class="text-right">$4.17B</td></tr>
+                                <tr><td class="pr-6">Project Iceberg (2024)</td><td class="pr-6">500K ft&sup2; rear-axle / drivetrain facility</td><td class="text-right">$0.53B</td></tr>
+                                <tr class="font-semibold"><td class="pr-6">Project Orca (2026)</td><td class="pr-6">Second assembly line, Tacoma</td><td class="text-right">$3.60B</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+                <p class="mt-4 text-xs text-slate-400">Sources: Toyota USA Newsroom, Bexar County ECD presentation (Jun 2026).</p>
+            </div>
+
+            <!-- Chart B: Mega-project comparison -->
+            <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-7">
+                <div class="flex flex-wrap items-start justify-between gap-4 mb-1">
+                    <div>
+                        <h2 class="text-lg font-semibold text-slate-900">South Side mega-project density</h2>
+                        <p class="text-sm text-slate-500 mt-0.5">Investment vs. direct jobs &middot; bubble size = facility footprint</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600 pt-1">
+                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full" style="background: var(--s1-blue)"></span> Toyota Orca</span>
+                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full" style="background: var(--s2-aqua)"></span> JCB</span>
+                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full" style="background: var(--s3-yellow)"></span> International</span>
+                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full" style="background: var(--s4-green)"></span> Iceberg</span>
+                    </div>
+                </div>
+                <div class="relative h-72 mt-4">
+                    <canvas id="megaProjectChart" role="img"
+                            aria-label="Bubble chart comparing mega-projects: Toyota Project Orca 3.6 billion dollars and 2000 jobs with 2.5 million square feet; JCB 500 million dollars and 1500 jobs with 1 million square feet; International Motors 250 million dollars and 600 jobs with 900 thousand square feet; Project Iceberg 531 million dollars and 400 jobs with 500 thousand square feet."></canvas>
+                </div>
+                <details class="mt-4 text-sm">
+                    <summary class="cursor-pointer text-slate-500 hover:text-slate-700 select-none">View data table</summary>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="min-w-[520px] w-full text-left text-sm text-slate-700">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500">
+                                    <th class="py-2 pr-6 font-medium">Entity</th>
+                                    <th class="py-2 pr-6 font-medium text-right">Investment</th>
+                                    <th class="py-2 pr-6 font-medium text-right">Footprint</th>
+                                    <th class="py-2 pr-6 font-medium text-right">Direct jobs</th>
+                                    <th class="py-2 font-medium">Timeline</th>
+                                </tr>
+                            </thead>
+                            <tbody class="[&_td]:py-2 [&_tr]:border-b [&_tr]:border-slate-100" style="font-variant-numeric: tabular-nums;">
+                                <tr class="font-semibold"><td class="pr-6">Toyota (Project Orca)</td><td class="pr-6 text-right">$3.6B</td><td class="pr-6 text-right">2.5M ft&sup2;</td><td class="pr-6 text-right">2,000</td><td>2030 startup</td></tr>
+                                <tr><td class="pr-6">JCB</td><td class="pr-6 text-right">$500M</td><td class="pr-6 text-right">1.0M ft&sup2;</td><td class="pr-6 text-right">1,500</td><td>Late 2026 / 2027</td></tr>
+                                <tr><td class="pr-6">International Motors (Navistar)</td><td class="pr-6 text-right">$250M</td><td class="pr-6 text-right">900K ft&sup2;</td><td class="pr-6 text-right">600</td><td>Operational (2022)</td></tr>
+                                <tr><td class="pr-6">Toyota (Project Iceberg)</td><td class="pr-6 text-right">$531M</td><td class="pr-6 text-right">500K ft&sup2;</td><td class="pr-6 text-right">400+</td><td>Fall 2026</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+                <p class="mt-4 text-xs text-slate-400">Sources: Toyota, JCB, International Motors announcements; report Section 1 mega-projects table.</p>
+            </div>
+        </section>
+
+        <!-- ============================ STRATEGIC PILLARS ============================ -->
+        <section aria-label="Strategic pillars" class="grid md:grid-cols-3 gap-4">
+            <article class="bg-white border border-slate-200 rounded-xl p-6">
+                <div class="h-9 w-9 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0v7m-6.16-3.42A12.08 12.08 0 0112 21.5a12.08 12.08 0 016.16-3.92L12 14z"/>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-slate-900">The Educational Pull-Model</h3>
+                <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+                    OEM demand actively shapes regional curricula: Toyota's $1.7M CAST STEM grant at Southwest ISD,
+                    the $9M Ready to Work package (1,650 OJT hires + 150 upskilled incumbents), and the Alamo Technical
+                    Institute launched July 1, 2026 as a unified fast-credentialing gateway.
+                </p>
+                <ul class="mt-3 space-y-1.5 text-xs text-slate-500">
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">98%</span> TX FAME AMT post-graduation employment</li>
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">2027</span> A&amp;M-SA PLC laboratory (Toyota-funded)</li>
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">90K</span> students served annually by Alamo Colleges</li>
+                </ul>
+            </article>
+            <article class="bg-white border border-slate-200 rounded-xl p-6">
+                <div class="h-9 w-9 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M16 3.13a4 4 0 010 7.75M12 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-slate-900">The 'Pracademic' Talent Gap</h3>
+                <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+                    The scarcest asset is the "unicorn" archetype: PhD-level mechanical engineering rigor paired with
+                    authentic, lived mastery of Japanese manufacturing culture. Three tracks demand it &mdash; Tier 1
+                    TPS leadership, SwRI applied research, and UTSA/CAMLS academic direction.
+                </p>
+                <ul class="mt-3 space-y-1.5 text-xs text-slate-500">
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">+13%</span> SA weekly earnings growth (Mar '24&ndash;Mar '25)</li>
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">$32.46</span> average hourly wage floor (Orca mandate)</li>
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">$88K+</span> filing-stage average Orca salary</li>
+                </ul>
+            </article>
+            <article class="bg-white border border-slate-200 rounded-xl p-6">
+                <div class="h-9 w-9 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v16h16M8 15l3-3 3 2 5-6"/>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-slate-900">TPS / Lean Integration Risk</h3>
+                <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+                    Integrating the Tacoma line without disrupting Tundra/Sequoia yields (197,506 vehicles in 2025) demands
+                    Nemawashi consensus-building and Genchi Genbutsu discipline. TMAC translates TPS to Tier 2/3 SMEs;
+                    CyManII secures the automated lines behind it.
+                </p>
+                <ul class="mt-3 space-y-1.5 text-xs text-slate-500">
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">2007</span> UTSA CAMLS founded for lean systems research</li>
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">$111M</span> CyManII DOE public-private partnership</li>
+                    <li class="flex gap-2"><span class="text-blue-600 font-semibold">30K+</span> professionals trained by CyManII (2024)</li>
+                </ul>
+            </article>
+        </section>
+
+        <footer class="pt-2 pb-28 text-xs text-slate-400">
+            SA INDUSTRIAL WEALTH &middot; Knowledge Engine by Dr. Ozmen &middot; Figures sourced from Toyota, Bexar County,
+            City of San Antonio, KSAT, San Antonio Report, UTSA, Alamo Colleges &middot; July 2026 factbase.
+        </footer>
+    </main>
+
+    <!-- ============================ STRATEGIC AI ADVISOR ============================ -->
+    <div id="chat-panel"
+         class="fixed bottom-24 right-4 sm:right-6 z-50 w-96 max-w-[calc(100vw-2rem)] h-[34rem] max-h-[calc(100vh-8rem)] bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <div class="bg-blue-800 text-white px-4 py-3 flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2.5">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+                </span>
+                <div>
+                    <p class="text-sm font-semibold leading-tight">Strategic AI Advisor</p>
+                    <p class="text-[11px] text-blue-200 leading-tight">Embedded Knowledge Graph &middot; Dr. Ozmen</p>
+                </div>
+            </div>
+            <button id="chat-close" aria-label="Minimize chat" class="text-blue-200 hover:text-white p-1 rounded transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" d="M5 12h14"/>
+                </svg>
+            </button>
+        </div>
+        <div id="chat-history" class="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-50 text-sm" aria-live="polite"></div>
+        <div class="px-3.5 py-1.5 border-t border-slate-100 bg-white text-[11px] text-slate-400 shrink-0">
+            Context: <span id="chat-context" class="font-medium text-slate-500">none yet</span>
+        </div>
+        <form id="chat-form" class="p-2.5 border-t border-slate-200 bg-white flex items-center gap-2 shrink-0">
+            <label for="chat-input" class="sr-only">Ask the Strategic AI Advisor</label>
+            <input id="chat-input" type="text" autocomplete="off" maxlength="500"
+                   placeholder="Ask about supply chain, SwRI, talent…"
+                   class="flex-1 min-w-0 text-sm px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400">
+            <button id="chat-send" type="submit"
+                    class="shrink-0 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 text-white text-sm font-medium px-3.5 py-2 rounded-lg transition-colors">
+                Send
+            </button>
+        </form>
+    </div>
+
+    <button id="chat-launcher" aria-label="Open Strategic AI Advisor"
+            class="fixed bottom-5 right-4 sm:right-6 z-50 h-14 w-14 rounded-full bg-blue-800 hover:bg-blue-900 text-white shadow-xl flex items-center justify-center transition-transform hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8m-8 4h5m-9 6l3.5-3.5H18a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v14z"/>
+        </svg>
+    </button>
+
+    <!-- ================================ SCRIPTS ================================ -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        'use strict';
+
+        /* =================================================================
+         * 1. CHARTS
+         * =============================================================== */
+        var css = getComputedStyle(document.documentElement);
+        var C = {
+            blue:     css.getPropertyValue('--s1-blue').trim()   || '#2a78d6',
+            blueDeep: css.getPropertyValue('--s1-deep').trim()   || '#1c5cab',
+            aqua:     css.getPropertyValue('--s2-aqua').trim()   || '#1baf7a',
+            yellow:   css.getPropertyValue('--s3-yellow').trim() || '#eda100',
+            green:    css.getPropertyValue('--s4-green').trim()  || '#008300',
+            deemph:   css.getPropertyValue('--deemph').trim()    || '#86b6ef',
+            ink:      css.getPropertyValue('--ink').trim()       || '#0b0b0b',
+            muted:    css.getPropertyValue('--ink-muted').trim() || '#898781',
+            gridline: css.getPropertyValue('--gridline').trim()  || '#e1e0d9',
+            baseline: css.getPropertyValue('--baseline').trim()  || '#c3c2b7'
+        };
+        var LABEL_FONT = '600 12px system-ui, -apple-system, "Segoe UI", sans-serif';
+
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.font.family = 'system-ui, -apple-system, "Segoe UI", sans-serif';
+
+            /* ---- Chart A: Toyota investment waves (bar) ---- */
+            var INV_LABELS = [['Legacy campus', '2003–24'], ['Project Iceberg', '2024'], ['Project Orca', '2026']];
+            var INV_VALUES = [4.17, 0.53, 3.6];
+            var INV_TAGS   = ['$4.2B', '$531M', '$3.6B'];
+
+            var capLabelPlugin = {
+                id: 'capLabels',
+                afterDatasetsDraw: function (chart) {
+                    var meta = chart.getDatasetMeta(0);
+                    var ctx = chart.ctx;
+                    ctx.save();
+                    ctx.font = LABEL_FONT;
+                    ctx.fillStyle = C.ink;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    meta.data.forEach(function (bar, i) {
+                        ctx.fillText(INV_TAGS[i], bar.x, bar.y - 6);
+                    });
+                    ctx.restore();
+                }
+            };
+
+            var invCanvas = document.getElementById('investmentChart');
+            if (invCanvas) {
+                new Chart(invCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: INV_LABELS,
+                        datasets: [{
+                            data: INV_VALUES,
+                            backgroundColor: [C.deemph, C.deemph, C.blue],
+                            hoverBackgroundColor: ['#5598e7', '#5598e7', C.blueDeep],
+                            maxBarThickness: 24,
+                            borderRadius: 4,
+                            borderSkipped: 'bottom'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#1e293b', padding: 10, cornerRadius: 8, displayColors: false,
+                                callbacks: {
+                                    title: function (items) { return items[0].label.replace(',', ' · '); },
+                                    label: function (item) { return 'Investment: $' + item.parsed.y.toFixed(2) + 'B'; }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                border: { color: C.baseline },
+                                ticks: { color: C.muted, font: { size: 12 } }
+                            },
+                            y: {
+                                beginAtZero: true, suggestedMax: 5,
+                                grid: { color: C.gridline, lineWidth: 1 },
+                                border: { display: false },
+                                ticks: {
+                                    color: C.muted, font: { size: 12 }, maxTicksLimit: 6,
+                                    callback: function (v) { return '$' + v + 'B'; }
+                                }
+                            }
+                        }
+                    },
+                    plugins: [capLabelPlugin]
+                });
+            }
+
+            /* ---- Chart B: mega-project comparison (bubble) ---- */
+            var MEGA = [
+                { name: 'Toyota (Project Orca)',   short: 'Toyota Orca',   x: 3.6,   y: 2000, sqft: 2.5, color: C.blue,   timeline: '2030 startup' },
+                { name: 'JCB',                     short: 'JCB',           x: 0.5,   y: 1500, sqft: 1.0, color: C.aqua,   timeline: 'Late 2026 / 2027' },
+                { name: 'International (Navistar)',short: 'International', x: 0.25,  y: 600,  sqft: 0.9, color: C.yellow, timeline: 'Operational (2022)' },
+                { name: 'Toyota (Project Iceberg)',short: 'Iceberg',       x: 0.531, y: 400,  sqft: 0.5, color: C.green,  timeline: 'Fall 2026', labelBelow: true }
+            ];
+            var rOf = function (sqft) { return Math.round(Math.sqrt(sqft) * 16); };
+
+            var bubbleLabelPlugin = {
+                id: 'bubbleLabels',
+                afterDatasetsDraw: function (chart) {
+                    var ctx = chart.ctx;
+                    ctx.save();
+                    ctx.font = LABEL_FONT;
+                    ctx.fillStyle = C.ink;
+                    ctx.textAlign = 'center';
+                    chart.data.datasets.forEach(function (ds, di) {
+                        var el = chart.getDatasetMeta(di).data[0];
+                        if (!el) return;
+                        if (ds.meta.labelBelow) {
+                            ctx.textBaseline = 'top';
+                            ctx.fillText(ds.label, el.x, el.y + el.options.radius + 6);
+                        } else {
+                            ctx.textBaseline = 'bottom';
+                            ctx.fillText(ds.label, el.x, el.y - el.options.radius - 6);
+                        }
+                    });
+                    ctx.restore();
+                }
+            };
+
+            var megaCanvas = document.getElementById('megaProjectChart');
+            if (megaCanvas) {
+                new Chart(megaCanvas, {
+                    type: 'bubble',
+                    data: {
+                        datasets: MEGA.map(function (p) {
+                            return {
+                                label: p.short,
+                                data: [{ x: p.x, y: p.y, r: rOf(p.sqft) }],
+                                backgroundColor: p.color,
+                                borderColor: '#ffffff',   /* 2px surface ring for overlap legibility */
+                                borderWidth: 2,
+                                hoverBorderWidth: 2,
+                                meta: p
+                            };
+                        })
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: { padding: { top: 18, right: 24 } },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#1e293b', padding: 10, cornerRadius: 8, displayColors: false,
+                                callbacks: {
+                                    title: function (items) { return items[0].dataset.meta.name; },
+                                    label: function (item) {
+                                        var p = item.dataset.meta;
+                                        return [
+                                            'Investment: $' + (p.x >= 1 ? p.x.toFixed(1) + 'B' : Math.round(p.x * 1000) + 'M'),
+                                            'Direct jobs: ' + p.y.toLocaleString(),
+                                            'Footprint: ' + p.sqft.toFixed(1) + 'M sq ft',
+                                            'Timeline: ' + p.timeline
+                                        ];
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                min: 0, max: 4.2,
+                                title: { display: true, text: 'Capital investment ($B)', color: C.muted, font: { size: 11 } },
+                                grid: { color: C.gridline, lineWidth: 1 },
+                                border: { color: C.baseline },
+                                ticks: { color: C.muted, font: { size: 12 }, callback: function (v) { return '$' + v + 'B'; } }
+                            },
+                            y: {
+                                min: 0, max: 2500,
+                                title: { display: true, text: 'Direct jobs', color: C.muted, font: { size: 11 } },
+                                grid: { color: C.gridline, lineWidth: 1 },
+                                border: { display: false },
+                                ticks: { color: C.muted, font: { size: 12 }, maxTicksLimit: 6, callback: function (v) { return v.toLocaleString(); } }
+                            }
+                        }
+                    },
+                    plugins: [bubbleLabelPlugin]
+                });
+            }
+        }
+
+        /* =================================================================
+         * 2. STRATEGIC AI ADVISOR — embedded knowledge graph, no external APIs
+         * =============================================================== */
+        var PERSONA_INTRO =
+            "I am the bespoke AI Knowledge Engine developed by Dr. Ozmen, running entirely on an embedded " +
+            "knowledge graph of the July 2026 Toyota expansion factbase — no external APIs. Ask me anything, " +
+            "or start with one of these vectors.";
+
+        /* Each node: id · label (for guidance chips) · chip (guaranteed to re-match its own pattern) ·
+           pattern (intent regex) · response (first answer) · deep (the "tell me more" layer). */
+        var knowledgeBase = [
+            {
+                id: 'orca',
+                label: 'Project Orca & the $3.6B expansion',
+                chip: 'Project Orca expansion',
+                pattern: /orca|3\.6|expansion|tacoma|second (assembly )?line|announce|double|baja/i,
+                response: "Project Orca is Toyota's $3.6B expansion of the San Antonio campus: a second vehicle assembly line for the Tacoma, 2.5 million sq ft of new advanced-manufacturing space, and 2,000 new jobs, doubling the plant's footprint by 2030. Tacoma production transfers from Toyota Motor Manufacturing Baja California over roughly four years, adding ~150,000 units of annual capacity. The campus will then assemble Tacoma, Tundra, Sequoia, and rear axles on one site.",
+                deep: "Deeper context: 'Project Orca' was the codename in Toyota's state incentive filings (Texas Comptroller JETI application J0032, Southwest ISD) at a filing-stage value of ~$2B before the final $3.6B announcement on July 6, 2026. Filings phased the 2,000 jobs as 320 in 2028, 1,440 in 2029, and 240 in 2030, at a filing-stage average salary above $88,000. Combined with the $531M Project Iceberg rear-axle facility, cumulative Toyota investment in San Antonio reaches $8.3B."
+            },
+            {
+                id: 'investment',
+                label: 'Incentives & the capital stack',
+                chip: 'Incentives and investment stack',
+                pattern: /invest(ment|or)?s?\b|incentive|abatement|tax|jeti|tef|enterprise fund|8\.3|capital|subsid|303/i,
+                response: "The incentive stack behind the expansion totals at least $303M: the City of San Antonio's $122.1M package (including an $88.1M ten-year property tax abatement for 2031–2041, $24.5M in road improvements, up to $9M in worker-training grants), Bexar County's $55.3M ten-year abatement on $2B of investment, $20.7M in utility support (CPS Energy $16.2M rate program, SAWS $4.5M fee waivers), and state support via a $20M Texas Enterprise Fund grant plus the JETI program.",
+                deep: "The return math: the $185.2M city-and-utilities package works out to ~$92,628 per new job, and the full stack could exceed $150,000 per job over the abatement decade. In exchange, Toyota must create 2,000 full-time jobs at an average of $32.46/hour, fill at least 50% with Bexar County residents, and direct 10% of abatement savings to worker training, transportation, or child care. City staff project a cumulative economic impact of ~$208B through 2035 — nearly 7% of Bexar County's GDP — with $3.2B generated during construction alone (2026–2030)."
+            },
+            {
+                id: 'supply',
+                label: 'Supply chain ripple effects',
+                chip: 'Supply chain and Tier 1 suppliers',
+                pattern: /supply.?chain|tier.?[123]|supplier|logistic|jit|just.?in.?time|toyoda|gosei|aisin|avanzar|toyotetsu|futaba|sticky|usmca|near.?shor/i,
+                response: "San Antonio anchors the northern end of the Texas–Mexico Automotive Supercluster (TMASC). The Toyota campus hosts 23 on-site Tier 1/Tier 2 suppliers employing ~5,600 people — Toyoda Gosei, Aisin, Avanzar, Toyotetsu, Futaba, AGC among them. Toyota's strict Just-In-Time and Just-In-Sequence protocols force suppliers into a tight geographic radius, so a second assembly line compels massive supplier capital scaling. The $8.3B sunk cost creates a 'sticky' center of industrial gravity suppliers cannot serve from afar.",
+                deep: "Historical proof of the ripple: when Tundra production began, the 2005 supplier park drew $307M and 2,108 jobs across 17 companies. Toyoda Gosei alone committed $25M, 158 jobs, and a 218,400 sq ft plant; Avanzar runs a 252,676 sq ft process center coordinating 186 external suppliers; Aisin's nearby Cibolo 'Plant of the Future' is a $400M, 463,800 sq ft transmission facility targeting 900 jobs. The Tacoma transfer from Baja California also reflects USMCA-driven near-shoring — the arbitrage has shifted from cheap labor to the best integration of automation, infrastructure, and R&D."
+            },
+            {
+                id: 'education',
+                label: 'Education & workforce pipeline',
+                chip: 'Education pipeline and Alamo ATI',
+                pattern: /education|school|alamo|ati\b|technical institute|a ?& ?m|tamusa|cast stem|swisd|fame|ready to work|training|workforce|pipeline|college|credential|plc lab/i,
+                response: "San Antonio runs a 'pull model' of education: OEM demand directly shapes curricula. Toyota's USA Foundation put $1.7M into CAST STEM at Southwest ISD; the city embedded a $9M Ready to Work package into the deal ($8.25M on-the-job training for up to 1,650 hires, $750K to upskill 150 incumbents); TX FAME with Alamo Colleges deploys electromechanical technologists via work-integrated cohorts; and Texas A&M-San Antonio is building a Toyota-funded PLC laboratory for its ESET program by fall 2027.",
+                deep: "The newest layer is the Alamo Technical Institute, launched July 1, 2026 — a unified gateway for fast, career-aligned credentialing with centralized intake, skills assessment, and coordinated funding (SA Ready to Work, Workforce Pell, Adult Education). Alamo Colleges serves 90,000 students annually and just won a $192,910 TWC grant to upskill 151 Toyotetsu employees. The track record: since 2016, 73 St. Philip's students completed the TX FAME AMT program with 98% employed after graduation — an associate degree, 60 credit hours, and two years of work experience in five semesters."
+            },
+            {
+                id: 'research',
+                label: 'SwRI & the R&D ecosystem',
+                chip: 'SwRI research and science',
+                pattern: /research|swri|southwest research|science|r ?& ?d|nasgro|darwin|fracture|fatigue|consortium|afev|nextcar|prius|fluid|dynamometer|v2x|computational/i,
+                response: "The Southwest Research Institute (SwRI) is the region's scientific vanguard — one of the largest independent applied-R&D organizations in the US. Working with Toyota under the ARPA-E NEXTCAR program, SwRI achieved a documented 20% fuel-efficiency improvement on a Prius Prime using look-ahead algorithms, V2X communication, and a unique CAV chassis dynamometer. Its AFEV consortium studies fluids for hybrid/electric drivetrains, and it develops the NASGRO and DARWIN fracture-mechanics platforms used globally.",
+                deep: "At the doctoral level, SwRI recruits PhD mechanical engineers for computational fracture mechanics — modern Fortran plus ML/AI code optimization on DARWIN/NASGRO, weight-function methods, and continuum mechanics for high-consequence environments. SwRI also houses TMAC (the NIST MEP affiliate for the region), which translates Toyota Production System methods into standardized protocols for Tier 2/3 suppliers and provides DFARS cybersecurity compliance — the bridge between bleeding-edge research and factory-floor execution."
+            },
+            {
+                id: 'cyber',
+                label: 'CyManII & industrial cybersecurity',
+                chip: 'CyManII cybersecurity',
+                pattern: /cyber|cymanii|security|iiot|hack|industrial control|smart factory/i,
+                response: "As Project Orca fills the campus with networked robotics, cybersecurity becomes a physical-safety and operational-continuity concern. UTSA leads CyManII — the Cybersecurity Manufacturing Innovation Institute, a $111M Department of Energy public-private partnership with 59 proposed member institutions — protecting industrial control systems and the manufacturing supply chain for plants like Toyota, JCB, and Navistar.",
+                deep: "CyManII had trained more than 30,000 professionals by 2024 and set a goal of preparing 1 million workers. Its $5M Texas Manufacturing x Transformation Hub at Port San Antonio occupies a 14,500 sq ft facility granted rent-free for up to 18 years (a $2.5M value), delivering hands-on training in secure smart manufacturing. Complementing it, TMAC at SwRI provides DFARS compliance services that insulate the local supplier base from digital espionage and disruption."
+            },
+            {
+                id: 'talentgap',
+                label: "The 'Pracademic' talent gap",
+                chip: 'The Pracademic talent gap',
+                pattern: /pracademic|talent|gap|phd|doctoral|unicorn|leadership|shortage|deficit|career/i,
+                response: "The region's acute structural deficit sits at the apex of the engineering hierarchy: 'pracademic' leaders combining PhD-level mechanical engineering rigor with authentic, lived mastery of Japanese manufacturing culture — Nemawashi consensus-building and Genchi Genbutsu root-cause discipline. Ample infrastructure trains technicians and mid-level managers; this 'unicorn' archetype is the missing linchpin for scaling a $3.6B smart factory.",
+                deep: "That profile dominates three interconnected tracks: (1) Tier 1 TPS leadership at Toyoda Gosei, Aisin, or Forma — overseeing robotic integration and bridging Japanese executives with local teams; (2) applied research at SwRI — leading FEA and fracture-mechanics work on DARWIN/NASGRO; (3) academic direction at UTSA CAMLS alongside Dr. Frank Chen and Dr. Hung-da Wan. Market tailwinds: San Antonio weekly earnings grew +13% (Mar 2024–Mar 2025, highest in Texas, 5th nationwide), the $32.46/hour Orca wage floor resets the market, and Texas has no state income tax."
+            },
+            {
+                id: 'tps',
+                label: 'TPS & Lean integration',
+                chip: 'TPS and Lean integration',
+                pattern: /tps|lean|kaizen|nemawashi|genchi|genbutsu|muda|toyota production|six sigma|value stream|cultural/i,
+                response: "Integrating the Toyota Production System during a rapid scale-up is incredibly high-risk: the Tacoma line must come online without disrupting Tundra/Sequoia yields (197,506 vehicles assembled in 2025). It demands authentic Nemawashi — patient consensus-building — and Genchi Genbutsu, 'go and see for yourself.' Textbook Lean Six Sigma can be learned at CAMLS; intuitive cultural mastery of TPS is the premium asset that de-risks the chaotic ramp-up phase.",
+                deep: "The institutional scaffolding: UTSA's CAMLS (founded 2007) teaches Lean Product and Process Development — Muda elimination, value-stream mapping, Kaizen — through its FMLS, RIM, SMS, and AMMS laboratories, which map directly onto Toyota's mixed-model lines, Navistar's Industry 4.0 floor, and JCB's automation. TMAC deploys advisors to standardize TPS for small and mid-size Tier 2/3 suppliers. The gap that remains is human: leaders who can keep TPS authentic under scale-up pressure rather than letting speed erode the culture."
+            },
+            {
+                id: 'megaprojects',
+                label: 'Mega-projects: JCB & Navistar',
+                chip: 'JCB and Navistar mega-projects',
+                pattern: /jcb|navistar|international motors|mega.?project|heavy equipment|telescopic|loadall|truck plant|emv|class [678]/i,
+                response: "Toyota isn't alone on the South Side. JCB is building a $500M, 1M sq ft factory on 400 acres — the most automated in its 80-year history — producing Loadall telescopic handlers and aerial equipment with 1,500 jobs from late 2026/2027. International Motors (Navistar) opened its $250M, 900,000 sq ft plant in 2022, building Class 6-8 diesel and eMV electric trucks under full Industry 4.0 principles. Together with Project Orca and Iceberg, that's a diversified advanced-manufacturing portfolio, not a single-company bet.",
+                deep: "Strategic reads: JCB will manufacture 85% of its North American sales volume domestically — a deliberate tariff hedge that illustrates San Antonio's geopolitical appeal as a manufacturing safe haven. Navistar's plant runs automated guided vehicles, cloud analytics, and connected machinery for predictive maintenance. The clustering effect matters most: industrial density lowers the marginal cost of municipal infrastructure and creates a liquid, localized labor market for robotics, controls, and manufacturing-management talent."
+            },
+            {
+                id: 'jobs',
+                label: 'Jobs, wages & hiring',
+                chip: 'Jobs and wage requirements',
+                pattern: /jobs?\b|wage|salary|salaries|hiring|hire|employ|pay|32\.46|88,?000|workforce size/i,
+                response: "Project Orca creates 2,000 new Toyota jobs at a mandated average wage of $32.46/hour (including bonuses, overtime, and shift differentials) — matching Bexar County's average wage — with a good-faith requirement that at least 50% of hires be local residents. Filing-stage documents put the average salary above $88,000. The full campus reaches roughly 11,600+ jobs: ~6,000 Toyota team members plus ~5,600 on-site supplier employees.",
+                deep: "Hiring phases from the filings: 320 jobs in 2028, 1,440 in 2029, and 240 in 2030 as the line reaches full rate. Bexar County added a skills-development grant of up to $250,000 ($1,000 per job for 250 jobs paying at least $73,756.80 annually), and the state attached a Veteran Created Job Bonus. Macro effect: San Antonio's average weekly earnings rose more than 13% from March 2024 to March 2025 — the highest growth among Texas metros — so the Orca wage floor forces secondary employers to raise compensation, a flywheel that pulls yet more technical talent into the region."
+            },
+            {
+                id: 'infrastructure',
+                label: 'Infrastructure & utilities',
+                chip: 'Roads and utility infrastructure',
+                pattern: /infrastructure|road|highway|281|spur|parkway|cps energy|saws|utilit|water|electric|zarzamora|applewhite/i,
+                response: "The physical build-out around the plant: $24.5M in city road money — relieving Zarzamora Street congestion, $4.5M for the Applewhite Road western entrances, and $20M toward a new four-lane eastern connector running ~2 miles to U.S. 281 (construction scheduled for 2029). CPS Energy adds a $16.2M electric-rate reduction program and SAWS $4.5M in fee waivers.",
+                deep: "The bigger play: Bexar County commissioners backed an advanced funding agreement with TxDOT committing up to $40M for an East-West spur highway, envisioned as part of a proposed $1.5B, 15-mile South Texas Parkway connecting I-35 and I-37 — permanent logistics infrastructure for the entire supercluster. San Antonio Report tallied SAWS and CPS infrastructure support and gas savings at $42.5M, on top of the headline incentive stack."
+            },
+            {
+                id: 'camls',
+                label: 'UTSA CAMLS laboratories',
+                chip: 'UTSA CAMLS labs',
+                pattern: /camls|klesse|utsa lab|frank chen|hung.?da wan|flexible manufacturing|fmls|rim lab|robotics lab|sustainable manufacturing/i,
+                response: "UTSA's Center for Advanced Manufacturing and Lean Systems (CAMLS, est. 2007) is the theoretical and applied heart of the region's manufacturing culture. Its labs map directly to industry: FMLS (flexible/lean systems → Toyota's mixed-model lines), RIM (robotics and intelligent machines → Navistar and JCB automation), SMS (sustainable manufacturing → decarbonization goals), and AMMS (architected materials via computational simulation).",
+                deep: "CAMLS is led by Dr. F. Frank Chen (Lutcher Brown Distinguished Chair, SME/IISE Fellow) and Dr. Hung-da Wan (Lean Six Sigma and digital factories). Its professional courses — including 'Lean Product and Process Development' — teach the counter-intuitive methods of the Lean Development System to executives and process engineers. The MS in Advanced Manufacturing and Industrial Engineering plugs graduate students into industry-consortium research, which is why CAMLS signals that San Antonio generates manufacturing IP rather than merely importing it."
+            }
+        ];
+
+        var FOLLOW_UP = /\b(tell me more|more|deeper|dive|elaborate|expand|continue|go on|yes|yeah|sure|please|ok(ay)?|next)\b/i;
+        var GREETING  = /\b(hi|hello|hey|good (morning|afternoon|evening)|who are you|help)\b/i;
+        var MENU      = /\b(topics?|menu|options|what (can|do) you)\b/i;
+
+        var lastTopic = null;      // knowledge-graph node of the last matched intent
+        var deepShown = false;     // whether the deep layer for lastTopic was already delivered
+        var suggestOffset = 0;     // rotates which 3 topics get offered on fallback
+
+        /* --- DOM --- */
+        var panel    = document.getElementById('chat-panel');
+        var launcher = document.getElementById('chat-launcher');
+        var closeBtn = document.getElementById('chat-close');
+        var history  = document.getElementById('chat-history');
+        var form     = document.getElementById('chat-form');
+        var input    = document.getElementById('chat-input');
+        var contextEl = document.getElementById('chat-context');
+
+        function setContext(node) {
+            lastTopic = node;
+            deepShown = false;
+            contextEl.textContent = node ? node.label : 'none yet';
+        }
+
+        function appendMessage(text, sender, suggestions) {
+            var row = document.createElement('div');
+            row.className = 'flex ' + (sender === 'user' ? 'justify-end' : 'justify-start');
+            var stack = document.createElement('div');
+            stack.className = 'max-w-[85%] flex flex-col gap-1.5 ' + (sender === 'user' ? 'items-end' : 'items-start');
+            var bubble = document.createElement('div');
+            bubble.className = sender === 'user'
+                ? 'bg-blue-700 text-white text-sm px-3 py-2 rounded-2xl rounded-br-sm leading-relaxed'
+                : 'bg-white border border-slate-200 text-slate-700 text-sm px-3 py-2 rounded-2xl rounded-bl-sm leading-relaxed shadow-sm';
+            bubble.textContent = text;   // textContent: user input is never parsed as HTML
+            stack.appendChild(bubble);
+            if (suggestions && suggestions.length) {
+                var chipWrap = document.createElement('div');
+                chipWrap.className = 'flex flex-wrap gap-1.5';
+                suggestions.forEach(function (node) {
+                    var chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'text-xs bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 px-2.5 py-1 rounded-full transition-colors';
+                    chip.textContent = node.chip;
+                    chip.addEventListener('click', function () {
+                        input.value = node.chip;
+                        sendMessage();
+                    });
+                    chipWrap.appendChild(chip);
+                });
+                stack.appendChild(chipWrap);
+            }
+            row.appendChild(stack);
+            history.appendChild(row);
+            history.scrollTop = history.scrollHeight;
+            return row;
+        }
+
+        function showTyping() {
+            var row = document.createElement('div');
+            row.className = 'flex justify-start';
+            row.innerHTML =
+                '<div class="bg-white border border-slate-200 px-3.5 py-2.5 rounded-2xl rounded-bl-sm shadow-sm flex items-center gap-1">' +
+                '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>';
+            history.appendChild(row);
+            history.scrollTop = history.scrollHeight;
+            return row;
+        }
+
+        function pickSuggestions(count, excludeId) {
+            var pool = knowledgeBase.filter(function (n) { return n.id !== excludeId; });
+            var out = [];
+            for (var i = 0; i < count && pool.length; i++) {
+                out.push(pool[(suggestOffset + i) % pool.length]);
+            }
+            suggestOffset = (suggestOffset + count) % knowledgeBase.length;
+            return out;
+        }
+
+        /* Regex intent matching: every node's pattern is scored against the input
+           (global match count); the highest-scoring node wins. No if/else keyword ladder. */
+        function matchIntent(msg) {
+            var best = null, bestScore = 0;
+            knowledgeBase.forEach(function (node) {
+                var re = new RegExp(node.pattern.source, 'gi');
+                var m = msg.match(re);
+                var score = m ? m.length : 0;
+                if (score > bestScore) { bestScore = score; best = node; }
+            });
+            return best;
+        }
+
+        /* Returns { text, suggestions } */
+        function getBotReply(rawText) {
+            var msg = rawText.toLowerCase();
+
+            var node = matchIntent(msg);
+            if (node) {
+                setContext(node);
+                return { text: node.response, suggestions: null };
+            }
+
+            if (FOLLOW_UP.test(msg)) {
+                if (lastTopic && !deepShown) {
+                    deepShown = true;
+                    return { text: lastTopic.deep, suggestions: null };
+                }
+                if (lastTopic && deepShown) {
+                    return {
+                        text: "That's the full depth of my graph on \"" + lastTopic.label + ".\" Pivot to another vector:",
+                        suggestions: pickSuggestions(3, lastTopic.id)
+                    };
+                }
+                return {
+                    text: "Happy to go deeper — first pick a vector so I know which branch of the knowledge graph to open:",
+                    suggestions: pickSuggestions(3, null)
+                };
+            }
+
+            if (MENU.test(msg)) {
+                return {
+                    text: "My knowledge graph covers " + knowledgeBase.length + " strategic vectors of the Toyota expansion factbase. A few to start with:",
+                    suggestions: pickSuggestions(3, null)
+                };
+            }
+
+            if (GREETING.test(msg)) {
+                return { text: PERSONA_INTRO, suggestions: pickSuggestions(3, null) };
+            }
+
+            /* Explicit guidance on no-match: offer 3 topics from the report. */
+            return {
+                text: "I couldn't map that query to a node in my knowledge graph. I'm strongest on these three areas — pick one, or rephrase with keywords like 'supply chain', 'incentives', or 'SwRI':",
+                suggestions: pickSuggestions(3, null)
+            };
+        }
+
+        function sendMessage() {
+            try {
+                var text = (input.value || '').trim();
+                if (!text) return;               // ignore empty / whitespace-only sends
+                input.value = '';
+                appendMessage(text, 'user');
+
+                var reply = getBotReply(text);   // resolve reply (and topic memory) at send time
+                var typingRow = showTyping();
+                window.setTimeout(function () {
+                    try {
+                        typingRow.remove();
+                        appendMessage(reply.text, 'bot', reply.suggestions);
+                    } catch (err) {
+                        console.error('AI Advisor render error:', err);
+                    }
+                }, 450);
+            } catch (err) {
+                // Never let a chat error break the page.
+                console.error('AI Advisor error:', err);
+            }
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            sendMessage();
+        });
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function setPanelOpen(open) {
+            panel.classList.toggle('hidden', !open);
+            launcher.classList.toggle('hidden', open);
+            if (open) input.focus();
+        }
+        launcher.addEventListener('click', function () { setPanelOpen(true); });
+        closeBtn.addEventListener('click', function () { setPanelOpen(false); });
+
+        appendMessage(PERSONA_INTRO, 'bot', pickSuggestions(3, null));
+        setPanelOpen(true);
+    });
+    </script>
+</body>
+</html>
