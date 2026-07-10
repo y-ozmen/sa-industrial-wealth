@@ -525,7 +525,7 @@
                 id: 'investment',
                 label: 'Incentives & the capital stack',
                 chip: 'Incentives and investment stack',
-                pattern: /invest(ment|or)?s?\b|incentive|abatement|tax|jeti|tef|enterprise fund|8\.3|capital|subsid|303/i,
+                pattern: /invest(ment|or)?s?\b|incentive|abatement|tax|jeti|tef|enterprise fund|8\.3|capital|subsid|303|economic impact|gdp\b|2035|208/i,
                 response: "The incentive stack behind the expansion totals at least $303M: the City of San Antonio's $122.1M package (including an $88.1M ten-year property tax abatement for 2031–2041, $24.5M in road improvements, up to $9M in worker-training grants), Bexar County's $55.3M ten-year abatement on $2B of investment, $20.7M in utility support (CPS Energy $16.2M rate program, SAWS $4.5M fee waivers), and state support via a $20M Texas Enterprise Fund grant plus the JETI program.",
                 deep: "The return math: the $185.2M city-and-utilities package works out to ~$92,628 per new job, and the full stack could exceed $150,000 per job over the abatement decade. In exchange, Toyota must create 2,000 full-time jobs at an average of $32.46/hour, fill at least 50% with Bexar County residents, and direct 10% of abatement savings to worker training, transportation, or child care. City staff project a cumulative economic impact of ~$208B through 2035 — nearly 7% of Bexar County's GDP — with $3.2B generated during construction alone (2026–2030)."
             },
@@ -632,7 +632,21 @@
             /\b(monthly|weekly|daily|quarterly)\s+(hiring|schedule|numbers?|figures?|targets?|quotas?)\b/i, // fine-grained schedules
             /\bwhat (day|date)\b|\bon which (day|date)\b/i,                            // calendar-level dates
             /\b(apply|application|resume|cv|interview process|recruiter|hr contact)\b/i, // job-application logistics
-            /\b(takt time|line speed|cycle time|machine count|robot count|number of robots)\b/i // plant-floor engineering specs
+            /\b(takt time|line speed|cycle time|machine count|robot count|number of robots)\b/i, // plant-floor engineering specs
+            /\b(revenue|profits?|stock price|share price|earnings|market cap|dividends?)\b/i, // corporate financials — not in the factbase
+            /\b(msrp|sticker price|horsepower|towing|mpg|fuel economy|ev range|trim levels?)\b/i, // vehicle product specs & pricing
+            /\b(price|cost) of (the )?(tacoma|tundra|sequoia|truck|vehicle)s?\b/i,     // vehicle pricing, phrased naturally
+            /\b(predict(s|ion|ions)?|forecasts?|speculat(e|ion)|crystal ball)\b/i,     // requests for predictions — verified facts only
+            /\blay.?offs?\b|\bjob cuts?\b|\bdownsiz/i,                                 // layoffs / downsizing — never covered
+            /\b(union(s|ize|ization)?|collective bargaining)\b/i,                      // labor-relations questions
+            /\b(visas?|h-?1b|immigration|work permits?|sponsorship)\b/i,               // hiring-eligibility logistics
+            /\b(diversity|dei)\b/i,                                                    // workforce diversity statistics
+            /\bconstruction (jobs?|workers?|headcount|crews?)\b/i,                     // construction-phase headcounts
+            /\b(shift (patterns?|schedules?)|night shifts?|overtime (policy|rules))\b/i, // shift & overtime detail
+            /\b(water|electricity|energy) (usage|consumption|demand)\b|\bcarbon footprint\b/i, // utility & environmental figures
+            /\b(contract (terms|language|text)|lawsuits?|litigation|legal (terms|risks?))\b/i, // legal / contractual documents
+            /\b(ceo|plant manager|hr (director|manager))\b|\bsalary of\b/i,            // named individuals & their pay
+            /\bwhich suppliers? (will|are going to|plan to)\b/i                        // future supplier commitments — publicly undisclosed
         ];
         /* WEAK signals: precision words ("specifically", "exactly"…). They do
            not block an answer — they make the Advisor add a transparency note
@@ -749,12 +763,12 @@
                 if (node) {
                     setContext(node);
                     return {
-                        text: "I don't have that specific data in my knowledge base — my factbase doesn't break figures down to that level, and I'd rather tell you that than guess. The closest verified data I hold: " + node.response,
+                        text: "That level of detail isn't in my source documents, so I won't estimate it. The closest verified data I hold: " + node.response,
                         suggestions: null
                     };
                 }
                 return {
-                    text: "I don't have that specific data in my knowledge base, and I won't guess. Here are the areas where I do hold verified figures:",
+                    text: "That level of detail isn't in my source documents, and estimating it would be guesswork. These are the areas where I hold verified data:",
                     suggestions: pickSuggestions(3, null)
                 };
             }
@@ -763,7 +777,7 @@
                 setContext(node);
                 if (PRECISION_WORDS.test(msg)) {
                     return {
-                        text: "Transparency note: I hold topic-level figures, so if the precise detail you asked for isn't below, it's not in my data. " + node.response,
+                        text: "One note first: my figures are topic-level, so if the exact detail you asked for isn't below, it isn't in my data. " + node.response,
                         suggestions: null
                     };
                 }
