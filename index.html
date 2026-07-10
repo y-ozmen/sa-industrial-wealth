@@ -506,7 +506,8 @@
          * =============================================================== */
         var PERSONA_INTRO =
             "I am the bespoke AI Knowledge Engine developed by Dr. Ozmen, running entirely on an embedded " +
-            "knowledge graph of the July 2026 Toyota expansion factbase — no external APIs. Ask me anything, " +
+            "knowledge graph of the July 2026 Toyota expansion factbase — no external APIs. When a question " +
+            "asks for detail beyond my factbase, I will say so plainly instead of guessing. Ask me anything, " +
             "or start with one of these vectors.";
 
         /* Each node: id · label (for guidance chips) · chip (guaranteed to re-match its own pattern) ·
@@ -610,6 +611,41 @@
             }
         ];
 
+        /* ---- Specific-question detector ------------------------------------
+           STRONG patterns describe levels of detail the factbase does NOT
+           contain (headcounts by job title, per-category breakdowns, HR
+           details, schedules…). If one matches, the Advisor openly says
+           "I don't have that specific data" instead of summarizing nearby
+           facts. To future-proof the bot, add new patterns to this list —
+           one per line, with a comment saying what it catches. */
+        var UNCOVERED_DETAIL = [
+            /\b(mechanical|manufacturing|electrical|industrial|civil|chemical|software|design|process|quality|controls?|robotics|maintenance)[- ]engineers?\b/i, // headcounts by engineering discipline
+            /\bhow many\s+(?:\w+\s+){0,3}(engineers?|technicians?|phds?|doctorates?|managers?|supervisors?|scientists?|specialists?|operators?|welders?|electricians?|designers?)\b/i, // "how many <job type>"
+            /\bbreak\s?downs?\b|\bbroken down\b/i,                                     // any breakdown request
+            /\b(composition|ratio|proportion|split)\s+(of|by|between)\b/i,             // compositional splits
+            /\bby\s+(role|position|title|discipline|department|degree|education|gender|age|ethnicity|nationality|shift)\b/i, // per-category figures
+            /\b(job|position|role)\s+titles?\b/i,                                      // lists of job titles
+            /\borg(anization)?\s?charts?\b/i,                                          // org structure
+            /\bexact(ly)?\s+(figure|number|count|list|amount|date|day|split)\b/i,      // demands for exact values
+            /\b(names?|list)\s+of\s+(the\s+)?(engineers?|hires?|managers?|employees?|contractors?|firms?|companies hired)\b/i, // named individuals/vendors
+            /\b(benefits?|pension|401k|health insurance|vacation|pto|salary band|pay scale|pay grade|bonus structure)\b/i, // HR/compensation detail
+            /\b(monthly|weekly|daily|quarterly)\s+(hiring|schedule|numbers?|figures?|targets?|quotas?)\b/i, // fine-grained schedules
+            /\bwhat (day|date)\b|\bon which (day|date)\b/i,                            // calendar-level dates
+            /\b(apply|application|resume|cv|interview process|recruiter|hr contact)\b/i, // job-application logistics
+            /\b(takt time|line speed|cycle time|machine count|robot count|number of robots)\b/i // plant-floor engineering specs
+        ];
+        /* WEAK signals: precision words ("specifically", "exactly"…). They do
+           not block an answer — they make the Advisor add a transparency note
+           so it never quietly pretends topic-level data is fine-grained. */
+        var PRECISION_WORDS = /\b(specific(ally)?|exact(ly)?|precise(ly)?|detailed|itemi[sz]ed|granular)\b/i;
+
+        function asksUncoveredDetail(msg) {
+            for (var i = 0; i < UNCOVERED_DETAIL.length; i++) {
+                if (UNCOVERED_DETAIL[i].test(msg)) return true;
+            }
+            return false;
+        }
+
         var FOLLOW_UP = /\b(tell me more|more|deeper|dive|elaborate|expand|continue|go on|yes|yeah|sure|please|ok(ay)?|next)\b/i;
         var GREETING  = /\b(hi|hello|hey|good (morning|afternoon|evening)|who are you|help)\b/i;
         var MENU      = /\b(topics?|menu|options|what (can|do) you)\b/i;
@@ -705,8 +741,32 @@
             var msg = rawText.toLowerCase();
 
             var node = matchIntent(msg);
+
+            /* Specific-question detector runs FIRST: if the question demands
+               detail the factbase doesn't hold, admit the gap explicitly —
+               then offer the closest verified data instead of dodging. */
+            if (asksUncoveredDetail(msg)) {
+                if (node) {
+                    setContext(node);
+                    return {
+                        text: "I don't have that specific data in my knowledge base — my factbase doesn't break figures down to that level, and I'd rather tell you that than guess. The closest verified data I hold: " + node.response,
+                        suggestions: null
+                    };
+                }
+                return {
+                    text: "I don't have that specific data in my knowledge base, and I won't guess. Here are the areas where I do hold verified figures:",
+                    suggestions: pickSuggestions(3, null)
+                };
+            }
+
             if (node) {
                 setContext(node);
+                if (PRECISION_WORDS.test(msg)) {
+                    return {
+                        text: "Transparency note: I hold topic-level figures, so if the precise detail you asked for isn't below, it's not in my data. " + node.response,
+                        suggestions: null
+                    };
+                }
                 return { text: node.response, suggestions: null };
             }
 
